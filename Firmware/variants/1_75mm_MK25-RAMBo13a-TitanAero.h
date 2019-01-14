@@ -1,6 +1,8 @@
 #ifndef CONFIGURATION_PRUSA_H
 #define CONFIGURATION_PRUSA_H
 
+// Edited for use with Titan Aero Extruder
+
 /*------------------------------------
  GENERAL SETTINGS
  *------------------------------------*/
@@ -14,7 +16,7 @@
 #define DEVELOPER
 
 // Printer name
-#define CUSTOM_MENDEL_NAME "Prusa i3 MK2.5"
+#define CUSTOM_MENDEL_NAME "MK25 TitanAero"
 
 // Electronics
 #define MOTHERBOARD BOARD_RAMBO_MINI_1_3
@@ -35,7 +37,7 @@
  *------------------------------------*/
 
 // Steps per unit {X,Y,Z,E}
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,133}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,837} // E837 for 3:1 reduction with 0.9° Stepper
 
 // Endstop inverting
 #define X_MIN_ENDSTOP_INVERTING 0 // set to 1 to invert the logic of the endstop.
@@ -60,7 +62,7 @@
 #define X_MIN_POS 0
 #define Y_MAX_POS 210
 #define Y_MIN_POS -4
-#define Z_MAX_POS 210
+#define Z_MAX_POS 225 // 210 -> 225 for Titan Aero Extruder (which is shorter)
 #define Z_MIN_POS 0.15
 
 // Canceled home position
@@ -176,12 +178,10 @@
 #define  DEFAULT_Kd 73.76
 #else
 // Define PID constants for extruder
-//#define  DEFAULT_Kp 40.925
-//#define  DEFAULT_Ki 4.875
-//#define  DEFAULT_Kd 86.085
-#define  DEFAULT_Kp 16.13
-#define  DEFAULT_Ki 1.1625
-#define  DEFAULT_Kd 56.23
+// Adjusted for Titan Aero with silicone sock at 215°
+#define  DEFAULT_Kp 41.85
+#define  DEFAULT_Ki 5.18
+#define  DEFAULT_Kd 84.53
 #endif
 
 // Extrude mintemp
@@ -199,14 +199,17 @@
  LOAD/UNLOAD FILAMENT SETTINGS
  *------------------------------------*/
 
+// Modified for Titan Aero.
+// Skip first (fast) feed. It's unnecessary and causes the stepper to skip or grind filament.
+
 // Load filament commands
 #define LOAD_FILAMENT_0 "M83"
-#define LOAD_FILAMENT_1 "G1 E70 F400"
+#define LOAD_FILAMENT_1 "G1 E5 F100"
 #define LOAD_FILAMENT_2 "G1 E40 F100"
 
 // Unload filament commands
 #define UNLOAD_FILAMENT_0 "M83"
-#define UNLOAD_FILAMENT_1 "G1 E-80 F7000"
+#define UNLOAD_FILAMENT_1 "G1 E-10 F7000"
 
 /*------------------------------------
  CHANGE FILAMENT SETTINGS
@@ -221,12 +224,12 @@
 #define FILAMENTCHANGE_FIRSTRETRACT -2
 #define FILAMENTCHANGE_FINALRETRACT -80
 
-#define FILAMENTCHANGE_FIRSTFEED 70 //E distance in mm for fast filament loading sequence used used in filament change (M600)
+#define FILAMENTCHANGE_FIRSTFEED 10 //E distance in mm for fast filament loading sequence used used in filament change (M600)
 #define FILAMENTCHANGE_FINALFEED 25 //E distance in mm for slow filament loading sequence used used in filament change (M600) and filament load (M701) 
 #define FILAMENTCHANGE_RECFEED 5
 
 #define FILAMENTCHANGE_XYFEED 50
-#define FILAMENTCHANGE_EFEED_FIRST 20 // feedrate in mm/s for fast filament loading sequence used in filament change (M600)
+#define FILAMENTCHANGE_EFEED_FIRST 4 // feedrate in mm/s for fast filament loading sequence used in filament change (M600)
 #define FILAMENTCHANGE_EFEED_FINAL 3.3f // feedrate in mm/s for slow filament loading sequence used in filament change (M600) and filament load (M701) 
 //#define FILAMENTCHANGE_RFEED 400
 #define FILAMENTCHANGE_RFEED 7000 / 60
@@ -262,10 +265,12 @@
 #define DIGIPOT_MOTOR_CURRENT_LOUD {135,135,135,135,135}
 
 // Motor Current settings for RAMBo mini PWM value = MotorCurrentSetting * 255 / range
+// Adjusted E current for Titan Aero slim stepper motor.
+// Reduced XY LOUD current.
 #if MOTHERBOARD == BOARD_RAMBO_MINI_1_0 || MOTHERBOARD == BOARD_RAMBO_MINI_1_3
 #define MOTOR_CURRENT_PWM_RANGE 2000
-#define DEFAULT_PWM_MOTOR_CURRENT  {270, 830, 450} // {XY,Z,E}
-#define DEFAULT_PWM_MOTOR_CURRENT_LOUD  {540, 830, 500} // {XY,Z,E}
+#define DEFAULT_PWM_MOTOR_CURRENT  {270, 830, 900} // {XY,Z,E}
+#define DEFAULT_PWM_MOTOR_CURRENT_LOUD  {400, 830, 900} // {XY,Z,E}
 #define Z_SILENT 0
 #define Z_HIGH_POWER 200
 #endif
