@@ -62,7 +62,7 @@
 #define X_MIN_POS 0
 #define Y_MAX_POS 210
 #define Y_MIN_POS -4
-#define Z_MAX_POS 225 // 210 -> 225 for Titan Aero Extruder (which is shorter)
+#define Z_MAX_POS 235 // 210 -> 235 for Titan Aero Extruder (which is shorter)
 #define Z_MIN_POS 0.15
 
 // Canceled home position
